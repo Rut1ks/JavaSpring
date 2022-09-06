@@ -8,4 +8,5 @@ import java.util.List;
 public interface CarsMarketRepository extends CrudRepository<CarsMarket, Long> {
 
     public List<CarsMarket> findByName(String name);
+    public List<CarsMarket> findByNameContains(String name);
 }

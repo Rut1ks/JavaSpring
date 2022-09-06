@@ -56,7 +56,7 @@ public class GamesController {
             @RequestParam("name") String name,
             Model model)
     {
-        List<Games> newsList = gamesRepository.findByName(name);
+        List<Games> newsList = gamesRepository.findByNameContains(name);
         model.addAttribute("games",newsList);
         return "games/index";
     }

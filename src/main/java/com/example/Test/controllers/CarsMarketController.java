@@ -54,7 +54,7 @@ public class CarsMarketController {
             @RequestParam("name") String name,
             Model model)
     {
-        List<CarsMarket> newsList = carsMarketRepository.findByName(name);
+        List<CarsMarket> newsList = carsMarketRepository.findByNameContains(name);
         model.addAttribute("cars",newsList);
         return "carsmarket/index";
     }
