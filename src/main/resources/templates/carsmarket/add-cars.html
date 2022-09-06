@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Cars</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:insert="fragments/header :: defaultheader"></div>
+
+<form action="/cars/add" method="post">
+  <p>Название</p>
+  <input type="text" id="name" name="name" placeholder="Название"><br>
+  <p>Дата</p>
+  <input type="text" id="date" name="date" placeholder="Дата"><br>
+  <p>Количество</p>
+  <input type="number" id="kolichestvo" name="kolichestvo" placeholder="Количество"><br>
+  <p>Цена</p>
+  <input type="number" id="cena" name="cena" placeholder="Цена"><br>
+  <p>Мощность</p>
+  <input type="number" id="moshnost" name="moshnost" placeholder="Кол-во лошадиных сил"><br>
+
+  <input type="submit" value="Добавить машину" class="btn btn-success"><br>
+</form><br>
+
+<a href="/cars/" class="btn btn-primary">Назад</a>
+
+</body>
+</html>
