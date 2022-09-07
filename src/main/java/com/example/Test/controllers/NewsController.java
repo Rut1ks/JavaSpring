@@ -5,12 +5,11 @@ import com.example.Test.repositories.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -50,7 +49,7 @@ public class NewsController {
     }
 
     @GetMapping("/search")
-    public String add(
+    public String search(
             @RequestParam("title") String title,
             Model model)
     {
@@ -59,4 +58,62 @@ public class NewsController {
         return "news/index";
     }
 
+    @GetMapping("/{id}")
+    public String read(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        Optional<News> news = newsRepository.findById(id);
+        ArrayList<News> newsArrayList = new ArrayList<>();
+        news.ifPresent(newsArrayList::add);
+        model.addAttribute("news",newsArrayList);
+        return "news/info-news";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        if(!newsRepository.existsById(id))
+        {
+            return "redirect:/news/";
+        }
+        Optional<News> news = newsRepository.findById(id);
+        ArrayList<News> newsArrayList = new ArrayList<>();
+        news.ifPresent(newsArrayList::add);
+        model.addAttribute("news",newsArrayList);
+        return "news/edit-news";
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public String editNews(
+            @PathVariable("id") Long id,
+            @RequestParam("title") String title,
+            @RequestParam("author") String author,
+            @RequestParam("body_text") String body_text,
+            @RequestParam("views") Integer views,
+            @RequestParam("likes") Integer likes,
+            Model model)
+    {
+        News news = newsRepository.findById(id).orElseThrow();
+        news.setTitle(title);
+        news.setAuthor(author);
+        news.setBody_text(body_text);
+        news.setViews(views);
+        news.setLikes(likes);
+        newsRepository.save(news);
+        return "redirect:/news/";
+    }
+
+    @GetMapping("/del/{id}")
+    public String del(
+            @PathVariable("id") Long id
+    )
+    {
+        News news = newsRepository.findById(id).orElseThrow();
+        newsRepository.delete(news);
+        return "redirect:/news/";
+    }
 }

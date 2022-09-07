@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Games</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:insert="fragments/header :: defaultheader"></div>
+
+
+<div th:each="el : ${games}" align="center">
+    <form th:action="'/games/edit/'+${el.id}" method="post" >
+        <p>Название</p>
+        <input style="background-color: chocolate" type="text" th:value="${el.name}" id="name" name="name" placeholder="Название"><br>
+        <p>Дата</p>
+        <input style="background-color: chocolate" id="date" th:value="${el.date}"  name="date" placeholder="Дата"><br>
+        <p>Жанр</p>
+        <input style="background-color: chocolate" type="text" th:value="${el.jenre}" id="jenre" name="jenre" placeholder="Жанр"><br>
+        <p>Цена</p>
+        <input style="background-color: chocolate" type="text" id="cena" name="cena" th:value="${el.cena}" placeholder="Цена"><br>
+        <p>Кол-во проданных копий</p>
+        <input style="background-color: chocolate" type="text" id="prodajKopii" th:value="${el.prodajKopii}" name="prodajKopii" placeholder="Кол-во проданных копий"><br>
+
+        <input type="submit" value="Изменить игру" class="btn btn-success"><br>
+        <a href="/games/" class="btn btn-primary">Назад к играм</a>
+    </form>
+</div>
+</body>
+</html>

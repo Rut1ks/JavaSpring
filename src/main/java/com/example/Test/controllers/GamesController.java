@@ -3,16 +3,16 @@ package com.example.Test.controllers;
 
 
 import com.example.Test.models.Games;
+import com.example.Test.models.News;
 import com.example.Test.repositories.GamesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -59,6 +59,66 @@ public class GamesController {
         List<Games> newsList = gamesRepository.findByNameContains(name);
         model.addAttribute("games",newsList);
         return "games/index";
+    }
+
+
+    @GetMapping("/{id}")
+    public String read(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        Optional<Games> games = gamesRepository.findById(id);
+        ArrayList<Games> gamesArrayList = new ArrayList<>();
+        games.ifPresent(gamesArrayList::add);
+        model.addAttribute("games",gamesArrayList);
+        return "games/info-games";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        if(!gamesRepository.existsById(id))
+        {
+            return "redirect:/games/";
+        }
+        Optional<Games> games = gamesRepository.findById(id);
+        ArrayList<Games> gamesArrayList = new ArrayList<>();
+        games.ifPresent(gamesArrayList::add);
+        model.addAttribute("games",gamesArrayList);
+        return "games/edit-games";
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public String editNews(
+            @PathVariable("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("date") String date,
+            @RequestParam("jenre") String jenre,
+            @RequestParam("cena") Integer cena,
+            @RequestParam("prodajKopii") Integer prodajKopii,
+            Model model)
+    {
+        Games games = gamesRepository.findById(id).orElseThrow();
+        games.setName(name);
+        games.setDate(date);
+        games.setJenre(jenre);
+        games.setCena(cena);
+        games.setProdajKopii(prodajKopii);
+        gamesRepository.save(games);
+        return "redirect:/games/";
+    }
+
+    @GetMapping("/del/{id}")
+    public String del(
+            @PathVariable("id") Long id
+    )
+    {
+        Games games = gamesRepository.findById(id).orElseThrow();
+        gamesRepository.delete(games);
+        return "redirect:/games/";
     }
 
 }

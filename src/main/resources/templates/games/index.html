@@ -19,6 +19,7 @@
     <p th:text="${el.jenre}"></p>
     <h3 th:text="${el.cena}"></h3>
     <h3 th:text="${el.prodajKopii}"></h3>
+    <a th:href="'/games/' + ${el.id}">Открыть</a>
 </div>
 
 <a href="/games/add" class="btn btn-primary">Добавить игру</a>

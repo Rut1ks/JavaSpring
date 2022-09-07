@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cars</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:insert="fragments/header :: defaultheader"></div>
+
+
+<div th:each="el : ${cars}" align="center">
+    <form th:action="'/cars/edit/'+${el.id}" method="post">
+        <p>Название</p>
+        <input type="text" style="background-color: chocolate" th:value="${el.name}" id="name" name="name" placeholder="Название"><br>
+        <p>Дата</p>
+        <input id="date" style="background-color: chocolate" th:value="${el.date}"  name="date" placeholder="Дата"><br>
+        <p>Количество</p>
+        <input type="text" style="background-color: chocolate" th:value="${el.kolichestvo}" id="kolichestvo" name="kolichestvo" placeholder="Количество"><br>
+        <p>Цена</p>
+        <input type="text" style="background-color: chocolate" id="cena" name="cena" th:value="${el.cena}" placeholder="Цена"><br>
+        <p>Кол-во лошадиных сил</p>
+        <input type="text" style="background-color: chocolate" id="moshnost" th:value="${el.moshnost}" name="moshnost" placeholder="Кол-во лошадиных сил"><br>
+
+        <input type="submit" value="Изменить машину" class="btn btn-success"><br>
+        <a href="/cars/" class="btn btn-primary">Назад к машинам</a>
+    </form><br>
+</div>
+</body>
+</html>

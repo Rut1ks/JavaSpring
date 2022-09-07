@@ -1,16 +1,16 @@
 package com.example.Test.controllers;
 
 import com.example.Test.models.CarsMarket;
+import com.example.Test.models.News;
 import com.example.Test.repositories.CarsMarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -50,13 +50,72 @@ public class CarsMarketController {
     }
 
     @GetMapping("/search")
-    public String add(
+    public String search(
             @RequestParam("name") String name,
             Model model)
     {
-        List<CarsMarket> newsList = carsMarketRepository.findByNameContains(name);
+        List<CarsMarket> newsList = carsMarketRepository.findByName(name);
         model.addAttribute("cars",newsList);
         return "carsmarket/index";
     }
 
+
+    @GetMapping("/{id}")
+    public String read(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        Optional<CarsMarket> carsMarket = carsMarketRepository.findById(id);
+        ArrayList<CarsMarket> carsMarketArrayList = new ArrayList<>();
+        carsMarket.ifPresent(carsMarketArrayList::add);
+        model.addAttribute("cars",carsMarketArrayList);
+        return "carsmarket/info-cars";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(
+            @PathVariable("id") Long id,
+            Model model)
+    {
+        if(!carsMarketRepository.existsById(id))
+        {
+            return "redirect:/cars/";
+        }
+        Optional<CarsMarket> carsMarket = carsMarketRepository.findById(id);
+        ArrayList<CarsMarket> carsMarketArrayList = new ArrayList<>();
+        carsMarket.ifPresent(carsMarketArrayList::add);
+        model.addAttribute("cars",carsMarketArrayList);
+        return "carsmarket/edit-cars";
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public String editNews(
+            @PathVariable("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("date") String date,
+            @RequestParam("kolichestvo") Integer kolichestvo,
+            @RequestParam("cena") Integer cena,
+            @RequestParam("moshnost") Integer moshnost,
+            Model model)
+    {
+        CarsMarket carsMarket = carsMarketRepository.findById(id).orElseThrow();
+        carsMarket.setName(name);
+        carsMarket.setDate(date);
+        carsMarket.setKolichestvo(kolichestvo);
+        carsMarket.setCena(cena);
+        carsMarket.setMoshnost(moshnost);
+        carsMarketRepository.save(carsMarket);
+        return "redirect:/cars/";
+    }
+
+    @GetMapping("/del/{id}")
+    public String del(
+            @PathVariable("id") Long id
+    )
+    {
+        CarsMarket carsMarket = carsMarketRepository.findById(id).orElseThrow();
+        carsMarketRepository.delete(carsMarket);
+        return "redirect:/cars/";
+    }
 }

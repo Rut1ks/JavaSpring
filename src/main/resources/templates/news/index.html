@@ -17,6 +17,7 @@
   <h2 th:text="${el.title}"></h2>
   <h3 th:text="${el.author}"></h3>
   <p th:text="${el.views}"></p>
+  <a th:href="'/news/' + ${el.id}">Прочитать статью</a>
 </div>
 
 <a href="/news/add" class="btn btn-primary">Добавить новость</a>

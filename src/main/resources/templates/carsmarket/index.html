@@ -19,6 +19,7 @@
     <p th:text="${el.kolichestvo}"></p>
     <h3 th:text="${el.cena}"></h3>
     <h3 th:text="${el.moshnost}"></h3>
+    <a th:href="'/cars/' + ${el.id}">Открыть</a>
 </div>
 
 <a href="/cars/add" class="btn btn-primary">Добавить машину</a>
