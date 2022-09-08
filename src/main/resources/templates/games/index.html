@@ -13,11 +13,16 @@
     <input type="submit" value="Найти">
 </form>
 
-<div th:each="el : ${games}">
+<div style="display: inline-block" th:each="el : ${games}">
+    <p>Название</p>
     <h2 th:text="${el.name}"></h2>
+    <p>Дата</p>
     <h3 th:text="${el.date}"></h3>
-    <p th:text="${el.jenre}"></p>
+    <p>Жанр</p>
+    <h3 th:text="${el.jenre}"></h3>
+    <p>Цена</p>
     <h3 th:text="${el.cena}"></h3>
+    <p>Копии</p>
     <h3 th:text="${el.prodajKopii}"></h3>
     <a th:href="'/games/' + ${el.id}">Открыть</a>
 </div>

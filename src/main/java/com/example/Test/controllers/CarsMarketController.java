@@ -92,11 +92,11 @@ public class CarsMarketController {
     @PostMapping("/edit/{id}")
     public String editNews(
             @PathVariable("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("date") String date,
-            @RequestParam("kolichestvo") Integer kolichestvo,
-            @RequestParam("cena") Integer cena,
-            @RequestParam("moshnost") Integer moshnost,
+            @RequestParam(value = "name",defaultValue = "Default") String name,
+            @RequestParam(value = "date",defaultValue = "Date") String date,
+            @RequestParam(value = "kolichestvo", defaultValue = "1") Integer kolichestvo,
+            @RequestParam(value = "cena",defaultValue = "1") Integer cena,
+            @RequestParam(value = "moshnost",defaultValue = "1") Integer moshnost,
             Model model)
     {
         CarsMarket carsMarket = carsMarketRepository.findById(id).orElseThrow();

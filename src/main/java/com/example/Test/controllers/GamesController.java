@@ -94,11 +94,11 @@ public class GamesController {
     @PostMapping("/edit/{id}")
     public String editNews(
             @PathVariable("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("date") String date,
-            @RequestParam("jenre") String jenre,
-            @RequestParam("cena") Integer cena,
-            @RequestParam("prodajKopii") Integer prodajKopii,
+            @RequestParam(value = "name",defaultValue = "Default") String name,
+            @RequestParam(value = "date",defaultValue = "Date") String date,
+            @RequestParam(value = "jenre", defaultValue = "Jenre") String jenre,
+            @RequestParam(value = "cena",defaultValue = "1") Integer cena,
+            @RequestParam(value = "prodajKopii",defaultValue = "1") Integer prodajKopii,
             Model model)
     {
         Games games = gamesRepository.findById(id).orElseThrow();
@@ -120,5 +120,4 @@ public class GamesController {
         gamesRepository.delete(games);
         return "redirect:/games/";
     }
-
 }
