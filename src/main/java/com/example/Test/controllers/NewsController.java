@@ -5,8 +5,10 @@ import com.example.Test.repositories.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,12 +31,13 @@ public class NewsController {
     }
 
     @GetMapping("/add")
-    public String addView(Model model)
+    public String addView(Model model, News news)
     {
+        //model.addAttribute("news",new News());
         return "news/add-news";
     }
 
-    @PostMapping("/add")
+   /* @PostMapping("/add")
     public String add(
             @RequestParam("title") String title,
             @RequestParam("author") String author,
@@ -46,7 +49,21 @@ public class NewsController {
         News newsOne = new News(title,bodyText,author,views,likes);
         newsRepository.save(newsOne);
         return "redirect:/news/";
-    }
+    }*/
+   @PostMapping("/add")
+   public String add(
+           @ModelAttribute("news")
+           @Valid News newNews,
+           BindingResult bindingResult,
+           Model model)
+   {
+       if(bindingResult.hasErrors())
+           return "news/add-news";
+
+
+       newsRepository.save(newNews);
+       return "redirect:/news/";
+   }
 
     @GetMapping("/search")
     public String search(
